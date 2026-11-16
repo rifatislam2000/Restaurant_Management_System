@@ -25,6 +25,8 @@ if (isset($_POST['login'])) {
         $_SESSION['full_name'] = $row['full_name'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['role'] = $row['role'];
+        $_SESSION['email'] = $row['email'];
+
 
         header("Location: Admin/dashboard.php");
         exit;

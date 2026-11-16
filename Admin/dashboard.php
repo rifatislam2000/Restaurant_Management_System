@@ -303,5 +303,3 @@ $welcomeName = $_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin';?>
 
 </html>
 <?php
-mysqli_free_result($usersResult);
-mysqli_close($conn);
