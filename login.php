@@ -77,8 +77,13 @@ if (isset($_POST['login'])) {
             class="btn border-3 btn-primary">
             Login
           </button>
+          <div class="col-12">
+            <div class="text-start">
+              <p class="mb-0">Don't have an account yet? <a href="auth-boxed-register.html">Sign up here</a>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
 
     </form>
   </div>
