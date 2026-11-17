@@ -16,8 +16,15 @@ if (isset($_POST['login'])) {
     if (mysqli_num_rows($result) > 0) {
 
       $row = mysqli_fetch_assoc($result);
+      $storedPassword = (string)$row['password'];
+      $passwordInfo = password_get_info($storedPassword);
+      $passwordMatches = $passwordInfo['algo'] === null
+        ? hash_equals($storedPassword, (string)$password)
+        : password_verify($password, $storedPassword);
 
-      if ($row['password'] == $password) {
+      if ((int)$row['status'] !== 1) {
+        echo "This account is inactive";
+      } elseif ($passwordMatches) {
 
         session_start();
 
