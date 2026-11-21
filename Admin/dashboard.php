@@ -59,7 +59,13 @@ $welcomeName = $_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin';?>
             <p class="sidebar-title">Admin menu</p>
             <nav aria-label="Admin navigation">
                 <a href="dashboard.php" aria-current="page">Dashboard</a>
+                <a href="foods.php">Foods</a>
+                <a href="categories.php">Categories</a>
+                <a href="orders.php">Orders</a>
+                <a href="order_items.php">Order Items</a>
                 <a href="users.php">Users</a>
+                <a href="../logout.php">Log out</a>
+
             </nav>
         </aside>
         <div class="dashboard-content">
