@@ -7,6 +7,9 @@ if (!in_array($_SESSION['role'] ?? '', ['admin', 'cashier'], true)) {
     header("Location: ../login.php");
     exit;
 }
+$welcomeName = $_SESSION['full_name'] ?? $_SESSION['username'] ?? 'Admin';
+$role = $_SESSION['role'] ?? 'cashier';
+$isAdmin = $role === 'admin';
 
 if (empty($_SESSION['orders_csrf'])) {
     $_SESSION['orders_csrf'] = bin2hex(random_bytes(32));
@@ -226,13 +229,64 @@ if (!$customersResult || !$foodsResult || !$ordersResult) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Order Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/style.css?v=<?= filemtime(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'style.css') ?>">
 </head>
-<body class="bg-light">
-<main class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Order Management</h1>
-        <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
-    </div>
+<body>
+    <header class="topbar">
+        <a class="brand" href="dashboard.php">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>Resto<span class="brand-light">Flow</span></span>
+        </a>
+        <div class="topbar-right">
+            <span class="today-date"><?= orders_escape(date('D, M j, Y')) ?></span>
+            <span class="user-avatar" aria-hidden="true"><?= orders_escape(strtoupper(substr($welcomeName, 0, 1))) ?></span>
+            <div class="user-details">
+                <strong><?= orders_escape($welcomeName) ?></strong>
+                <span><?= orders_escape(ucfirst($role)) ?></span>
+            </div>
+            <a class="logout-link" href="../logout.php">Log out</a>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar" aria-label="Main sidebar">
+            <p class="sidebar-title">Workspace</p>
+            <nav aria-label="Main navigation">
+                <a class="sidebar-link" href="dashboard.php"><span class="nav-icon" aria-hidden="true">◈</span>Dashboard</a>
+                <a class="sidebar-link active" href="orders.php" aria-current="page"><span class="nav-icon" aria-hidden="true">▤</span>Orders</a>
+                <a class="sidebar-link" href="order_items.php"><span class="nav-icon" aria-hidden="true">▦</span>Order items</a>
+                <a class="sidebar-link" href="customers.php"><span class="nav-icon" aria-hidden="true">♙</span>Customers</a>
+                <a class="sidebar-link" href="reports.php"><span class="nav-icon" aria-hidden="true">♙</span>Reports</a>
+                <a class="sidebar-link" href="../invoices/print.php"><span class="nav-icon" aria-hidden="true">♙</span>Print</a>
+            </nav>
+
+            <?php if ($isAdmin): ?>
+                <p class="sidebar-title management-title">Management</p>
+                <nav aria-label="Management navigation">
+                    <a class="sidebar-link" href="foods.php"><span class="nav-icon" aria-hidden="true">◉</span>Foods</a>
+                    <a class="sidebar-link" href="categories.php"><span class="nav-icon" aria-hidden="true">◫</span>Categories</a>
+                    <a class="sidebar-link" href="users.php"><span class="nav-icon" aria-hidden="true">♧</span>Users</a>
+                </nav>
+            <?php endif; ?>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-mark" aria-hidden="true">✦</span>
+                    <strong>Daily overview</strong>
+                    <p>Keep track of sales, orders, and your menu from one place.</p>
+                </div>
+                <a class="sidebar-logout" href="../logout.php"><span aria-hidden="true">↪</span>Log out</a>
+            </div>
+        </aside>
+
+<main class="dashboard-content">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">Order activity</p>
+            <h1>Order Management</h1>
+        </div>
+        <a href="dashboard.php" class="primary-button">Back to Dashboard</a>
+    </section>
     <?php if ($success !== ''): ?><div class="alert alert-success"><?= orders_escape($success) ?></div><?php endif; ?>
     <?php if ($error !== ''): ?><div class="alert alert-danger"><?= orders_escape($error) ?></div><?php endif; ?>
     <section class="card mb-4">
@@ -372,6 +426,7 @@ if (!$customersResult || !$foodsResult || !$ordersResult) {
         </div>
     </section>
 </main>
+    </div>
 <script>
 const orderItems = document.getElementById('order-items');
 const itemTemplate = document.getElementById('order-item-template');
