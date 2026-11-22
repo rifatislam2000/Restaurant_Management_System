@@ -130,7 +130,8 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `users` (`user_id`, `full_name`, `username`, `email`, `password`, `role`, `status`, `created_at`) VALUES
-(101, 'Rifat', 'rifat@gmail.com', 'rifat@gmail.com', '123456', 'admin', 1, '2026-11-08 03:36:45');
+(101, 'Rifat', 'rifat@gmail.com', 'rifat@gmail.com', '123456', 'admin', 1, '2026-11-08 03:36:45')
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 COMMIT;

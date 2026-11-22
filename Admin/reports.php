@@ -384,7 +384,7 @@ mysqli_stmt_close($dailyStatement);
                                         <td><?= reports_escape($order['cashier_name']) ?></td>
                                         <td><?= reports_escape($order['payment_method']) ?></td>
                                         <td><?= number_format((int)$order['item_count']) ?></td>
-                                        <td class="table-total">৳<?= number_format((float)$order['total_amount'], 2) ?></td>
+                                        <td class="table-total">$<?= number_format((float)$order['total_amount'], 2) ?></td>
                                         <td><span class="status-badge status-<?= reports_escape($order['status']) ?>"><?= reports_escape(ucfirst($order['status'])) ?></span></td>
                                     </tr>
                                 <?php endforeach; ?>
