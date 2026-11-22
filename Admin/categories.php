@@ -66,21 +66,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $description
                 );
 
-                if (mysqli_stmt_execute($stmt)) {
-
-                    mysqli_stmt_close($stmt);
-
-                    header("Location: categories.php?success=added");
-                    exit;
-                } else {
-
-                    if (mysqli_errno($conn) == 1062) {
-                        $error = "Category already exists.";
-                    } else {
-                        $error = "Unable to add category.";
+                try {
+                    $executed = mysqli_stmt_execute($stmt);
+                } catch (mysqli_sql_exception $exception) {
+                    if ((int)$exception->getCode() !== 1062) {
+                        throw $exception;
                     }
+                    $executed = false;
+                    $error = "Category already exists.";
                 }
 
+                if ($executed) {
+                    mysqli_stmt_close($stmt);
+                    header("Location: categories.php?success=added");
+                    exit;
+                }
+
+                if ($error === '') {
+                    $error = "Unable to add category.";
+                }
                 mysqli_stmt_close($stmt);
             }
         }
@@ -111,21 +115,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $categoryId
                 );
 
-                if (mysqli_stmt_execute($stmt)) {
-
-                    mysqli_stmt_close($stmt);
-
-                    header("Location: categories.php?success=updated");
-                    exit;
-                } else {
-
-                    if (mysqli_errno($conn) == 1062) {
-                        $error = "Category name already exists.";
-                    } else {
-                        $error = "Unable to update category.";
+                try {
+                    $executed = mysqli_stmt_execute($stmt);
+                } catch (mysqli_sql_exception $exception) {
+                    if ((int)$exception->getCode() !== 1062) {
+                        throw $exception;
                     }
+                    $executed = false;
+                    $error = "Category name already exists.";
                 }
 
+                if ($executed) {
+                    mysqli_stmt_close($stmt);
+                    header("Location: categories.php?success=updated");
+                    exit;
+                }
+
+                if ($error === '') {
+                    $error = "Unable to update category.";
+                }
                 mysqli_stmt_close($stmt);
             }
         }

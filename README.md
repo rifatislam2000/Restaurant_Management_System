@@ -137,7 +137,7 @@ The following steps describe the intended local development setup. The database 
 2. Copy the project folder into the web server's document root (for XAMPP, this is normally the `htdocs` folder).
 3. Start **Apache** and **MySQL** from the XAMPP Control Panel.
 4. Open phpMyAdmin in a browser and create a database named `restaurant_db`.
-5. Create the six tables and their primary-key and foreign-key relationships according to the Database Design section of the project documentation.
+5. Import [`assets/db/resturent_db.sql`](assets/db/resturent_db.sql) into `restaurant_db` using phpMyAdmin.
 6. Set the local database host, database name, username, and password in `config/db.php`.
 7. Enter the restaurant name, phone number, and address in `config/restaurant.php`.
 8. Open the project through the local web server and use the login page.
