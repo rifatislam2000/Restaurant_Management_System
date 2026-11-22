@@ -354,6 +354,7 @@ if (!$customersResult || !$foodsResult || !$ordersResult) {
                             <td class="text-nowrap">
                                 <a class="btn btn-sm btn-warning" href="orders.php?edit=<?= (int)$order['order_id'] ?>">Edit</a>
                                 <a class="btn btn-sm btn-info" href="order_items.php?order_id=<?= (int)$order['order_id'] ?>">Items</a>
+                                <a class="btn btn-sm btn-success" href="../invoices/print.php?order_id=<?= (int)$order['order_id'] ?>" target="_blank">Print</a>
                                 <form method="post" action="orders.php" class="d-inline" onsubmit="return confirm('Delete this order and its items?');">
                                     <input type="hidden" name="csrf_token" value="<?= orders_escape($csrfToken) ?>">
                                     <input type="hidden" name="action" value="delete">

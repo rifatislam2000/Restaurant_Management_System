@@ -89,12 +89,14 @@ if (!$ordersResult) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Restaurant Dashboard</title>
     <link rel="stylesheet" href="../assets/style.css?v=<?= filemtime(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'style.css') ?>">
 </head>
+
 <body>
     <header class="topbar">
         <a class="brand" href="dashboard.php">
@@ -128,6 +130,14 @@ if (!$ordersResult) {
                 <a class="sidebar-link" href="customers.php">
                     <span class="nav-icon" aria-hidden="true">♙</span>Customers
                 </a>
+
+                <a class="sidebar-link" href="reports.php">
+                    <span class="nav-icon" aria-hidden="true">♙</span>Reports
+                </a>
+                <a class="sidebar-link" href="../invoices/print.php">
+                    <span class="nav-icon" aria-hidden="true">♙</span>Print
+                </a>
+
             </nav>
 
             <?php if ($isAdmin): ?>
@@ -163,9 +173,9 @@ if (!$ordersResult) {
                 <article class="metric-card metric-sales">
                     <div class="metric-top">
                         <span class="metric-label">Sales today</span>
-                        <span class="metric-icon" aria-hidden="true">৳</span>
+                        <span class="metric-icon" aria-hidden="true">$</span>
                     </div>
-                    <strong class="metric-value">৳<?= number_format((float)$summary['today_sales'], 2) ?></strong>
+                    <strong class="metric-value">$<?= number_format((float)$summary['today_sales'], 2) ?></strong>
                     <span class="metric-caption">From completed orders</span>
                 </article>
                 <article class="metric-card metric-orders">
@@ -285,7 +295,9 @@ if (!$ordersResult) {
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
-                                <tr><td class="empty-state" colspan="7">No orders yet. Create your first order to get started.</td></tr>
+                                <tr>
+                                    <td class="empty-state" colspan="7">No orders yet. Create your first order to get started.</td>
+                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -295,4 +307,5 @@ if (!$ordersResult) {
         </main>
     </div>
 </body>
+
 </html>
