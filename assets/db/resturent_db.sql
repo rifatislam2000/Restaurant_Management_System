@@ -1,11 +1,19 @@
+CREATE DATABASE IF NOT EXISTS `restaurant_db`
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 
+USE `restaurant_db`;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `order_items`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `foods`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `users`;
 
-
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
@@ -19,13 +27,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16le;
-
-
-
---
---  `categories`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `categories` (
   `category_id` int NOT NULL AUTO_INCREMENT,
@@ -34,13 +36,7 @@ CREATE TABLE `categories` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_name` (`category_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
---
---  `foods`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `foods` (
   `food_id` int NOT NULL AUTO_INCREMENT,
@@ -49,20 +45,14 @@ CREATE TABLE `foods` (
   `description` text DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `is_available` tinyint NOT NULL DEFAULT 1,
+  `is_available` tinyint NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`food_id`),
   KEY `idx_foods_category_id` (`category_id`),
   CONSTRAINT `fk_foods_category`
     FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`)
     ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `customers`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `customers` (
   `customer_id` int NOT NULL AUTO_INCREMENT,
@@ -72,20 +62,14 @@ CREATE TABLE `customers` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`customer_id`),
   KEY `idx_customers_phone` (`phone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orders`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
   `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `total_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `total_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `payment_method` varchar(30) NOT NULL,
   `status` enum('pending','completed','cancelled') NOT NULL DEFAULT 'pending',
   PRIMARY KEY (`order_id`),
@@ -98,13 +82,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `fk_orders_customer`
     FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`)
     ON UPDATE CASCADE ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_items`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `order_items` (
   `order_item_id` int NOT NULL AUTO_INCREMENT,
@@ -123,19 +101,11 @@ CREATE TABLE `order_items` (
     FOREIGN KEY (`food_id`) REFERENCES `foods` (`food_id`)
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT `chk_order_items_quantity` CHECK (`quantity` > 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `full_name`, `username`, `email`, `password`, `role`, `status`, `created_at`) VALUES
-(101, 'Rifat', 'rifat@gmail.com', 'rifat@gmail.com', '123456', 'admin', 1, '2026-11-08 03:36:45')
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+INSERT INTO `users`
+  (`user_id`, `full_name`, `username`, `email`, `password`, `role`, `status`, `created_at`)
+VALUES
+  (101, 'Rifat', 'rifat@gmail.com', 'rifat@gmail.com',
+   '$2y$10$NOx9Kz.kDOe7YyCG9kfJ5.Q9ixzmS64SDrK.sszbjVIOj0VjtERVe',
+   'admin', 1, '2026-11-08 03:36:45');
